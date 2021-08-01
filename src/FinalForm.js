@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Form, Field } from "react-final-form";
 import createArrayWithNumbers from "./createArrayWithNumbers";
 import Input from "./Input";
 
@@ -31,17 +31,17 @@ export default function FormTest() {
   };
 
   return (
-    <Formik
+    <Form
       initialValues={{
         username: "",
         email: "",
       }}
       onSubmit={onSubmit}
     >
-      {({ errors, touched }) => (
+      {({ handleSubmit, errors, touched }) => (
         <div style={{ flex: 1 }}>
-          <h1>Formik</h1>
-          <Form>
+          <h1>Final Form</h1>
+          <form onSubmit={handleSubmit}>
             {createArrayWithNumbers(10).map((key) => {
               return (
                 <Field
@@ -63,9 +63,9 @@ export default function FormTest() {
             {errors.username && touched.username && errors.username}
 
             <button type="submit">Submit</button>
-          </Form>
+          </form>
         </div>
       )}
-    </Formik>
+    </Form>
   );
 }

@@ -1,27 +1,32 @@
-import React from 'react';
-import useForm from 'react-hook-form';
-import createArrayWithNumbers from './createArrayWithNumbers';
+import React from "react";
+import { useForm } from "react-hook-form";
+import createArrayWithNumbers from "./createArrayWithNumbers";
+import Input from "./Input";
 
 export default function Form() {
-  const { handleSubmit, register, errors } = useForm();
-  const onSubmit = values => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (values) => {
     console.log(values);
   };
 
   return (
-    <div>
+    <div style={{ flex: 1 }}>
       <h1>React Hook Form</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {createArrayWithNumbers(1000).map(key => {
+        {createArrayWithNumbers(10).map((key) => {
           return (
-            <input
+            <Input
               key={key}
-              name={`email${key}`}
-              ref={register({
-                required: 'This is required',
+              {...register(`email${key}`, {
+                required: "This is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: 'invalid email',
+                  message: "invalid email",
                 },
               })}
             />
@@ -29,10 +34,9 @@ export default function Form() {
         })}
         {errors.email && <div>{errors.email.message}</div>}
 
-        <input
-          name="username"
-          ref={register({
-            validate: value => (value === 'admin' ? true : 'Nice try!'),
+        <Input
+          {...register("username", {
+            validate: (value) => (value === "admin" ? true : "Nice try!"),
           })}
         />
         {errors.username && <div>{errors.username.message}</div>}
